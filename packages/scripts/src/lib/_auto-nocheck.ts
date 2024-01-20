@@ -2,12 +2,11 @@ import { relative, dirname } from 'node:path';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import globPkg from 'glob';
 import yargs from 'yargs';
 import ora from 'ora';
 import { type ProjectAnalysis } from '@glint/core';
 
-const globSync = globPkg.sync;
+import { collectFilePaths } from './_shared.js';
 
 export async function autoNocheck(
   args: Array<string>,
@@ -93,10 +92,6 @@ async function loadGlintCore(cwd: string): Promise<GlintCore> {
   }
 
   return glint;
-}
-
-function collectFilePaths(globs: Array<string>, cwd: string): Array<string> {
-  return globs.flatMap((glob) => globSync(glob, { cwd, absolute: true }));
 }
 
 // For the given file path, returns all templates in that file that have
